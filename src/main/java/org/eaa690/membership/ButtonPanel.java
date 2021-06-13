@@ -57,7 +57,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
             try {
                 Runtime.getRuntime().exec("sudo reboot");
             } catch (IOException ioe) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Error: " + ioe.getMessage());
             }
         }
     }
