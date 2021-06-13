@@ -13,8 +13,8 @@ public class ApplicationFrame extends JFrame {
 
     public ApplicationFrame() {
         add(titlePanel, BorderLayout.NORTH);
-        add(textLabel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(textLabel, BorderLayout.SOUTH);
+        add(buttonPanel, BorderLayout.CENTER);
 
         setUndecorated(Boolean.TRUE);
         setAlwaysOnTop(Boolean.TRUE);
