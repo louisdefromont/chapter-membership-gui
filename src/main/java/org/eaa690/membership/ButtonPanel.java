@@ -8,6 +8,8 @@ import java.awt.event.ActionListener;
 public class ButtonPanel extends JPanel implements ActionListener {
 
     private JButton exitButton = new JButton("Exit");
+    
+    private JButton rebootButton = new JButton("Reboot");
 
     private JButton membershipStatusButton = new JButton("Check Membership Status");
 
@@ -20,14 +22,17 @@ public class ButtonPanel extends JPanel implements ActionListener {
         membershipStatusButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
         membershipReportButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
         rfidCardAssignmentButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
+        rebootButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
 
         exitButton.addActionListener(this);
         membershipStatusButton.addActionListener(this);
         membershipReportButton.addActionListener(this);
         rfidCardAssignmentButton.addActionListener(this);
+        rebootButton.addActionListener(this);
 
         add(membershipStatusButton, BorderLayout.NORTH);
         add(membershipReportButton, BorderLayout.WEST);
+        add(rebootButton, BorderLayout.CENTER);
         add(rfidCardAssignmentButton, BorderLayout.EAST);
         add(exitButton, BorderLayout.SOUTH);
     }
@@ -46,6 +51,9 @@ public class ButtonPanel extends JPanel implements ActionListener {
         }
         if (e.getSource() == rfidCardAssignmentButton) {
             System.out.println("RFID Card Assignment Button pressed");
+        }
+        if (e.getSource() == rebootButton) {
+            Runtime.getRuntime().exec("sudo reboot");
         }
     }
 }
