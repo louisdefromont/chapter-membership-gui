@@ -1,5 +1,8 @@
 package org.eaa690.membership;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,10 +13,7 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-public class MembershipReportPanel extends JPanel implements ActionListener {
+public class MembershipStatusPanel extends JPanel implements ActionListener {
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -23,24 +23,25 @@ public class MembershipReportPanel extends JPanel implements ActionListener {
 
     private HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
 
-    public MembershipReportPanel() {
+    public MembershipStatusPanel() {
         try {
-            final MembershipReport report = getMembershipReport();
+            final Member member = getMember();
         } catch (ExecutionException | InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }
         add(closeButton);
     }
 
-    private MembershipReport getMembershipReport()
-            throws ExecutionException, InterruptedException, JsonProcessingException {
-        HttpRequest req = HttpRequest.newBuilder(URI.create(serviceURL + "/roster/report"))
-            .GET().build();
+    private Member getMember() throws ExecutionException, InterruptedException, JsonProcessingException {
+        RFIDReader reader = new RFIDReader();
+        String rfid = reader.getLastRead();
+        HttpRequest req = HttpRequest.newBuilder(URI.create(serviceURL + "/roster/find-by-rfid"))
+                .GET().build();
         CompletableFuture<HttpResponse<String>> response = client.sendAsync(req, HttpResponse.BodyHandlers.ofString());
         response.thenAccept(res -> System.out.println(res));
-        MembershipReport report = mapper.readValue(response.get().body(), MembershipReport.class);
+        Member member = mapper.readValue(response.get().body(), Member.class);
         response.join();
-        return report;
+        return member;
     }
 
     @Override
@@ -49,5 +50,4 @@ public class MembershipReportPanel extends JPanel implements ActionListener {
             setVisible(Boolean.FALSE);
         }
     }
-
 }
