@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class ButtonPanel extends JPanel implements ActionListener {
 
@@ -53,7 +54,11 @@ public class ButtonPanel extends JPanel implements ActionListener {
             System.out.println("RFID Card Assignment Button pressed");
         }
         if (e.getSource() == rebootButton) {
-            Runtime.getRuntime().exec("sudo reboot");
+            try {
+                Runtime.getRuntime().exec("sudo reboot");
+            } catch (IOException ioe) {
+                System.out.println("Error: " + e.getMessage());
+            }
         }
     }
 }
