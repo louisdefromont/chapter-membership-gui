@@ -1,7 +1,9 @@
-package org.eaa690.membership;
+package org.eaa690.membership.panels;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eaa690.membership.model.Member;
+import org.eaa690.membership.util.RFIDReader;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

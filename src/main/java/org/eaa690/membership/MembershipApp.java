@@ -1,9 +1,27 @@
 package org.eaa690.membership;
 
+import org.eaa690.membership.service.RosterService;
+import org.eaa690.membership.util.RFIDReader;
+
+import java.io.IOException;
+import java.util.Properties;
+
 public class MembershipApp {
 
     public static void main(String[] args) {
-        ApplicationFrame frame = new ApplicationFrame();
+        Properties props = new Properties();
+        try {
+            props.load(MembershipApp.class.getResourceAsStream("/application.properties"));
+        } catch (IOException e) {
+            System.out.println("Error loading properties: " + e);
+        }
+
+        RFIDReader rfidReader = new RFIDReader();
+        rfidReader.start();
+
+        RosterService rosterService = new RosterService(props);
+
+        ApplicationFrame frame = new ApplicationFrame(rosterService, rfidReader);
         frame.setVisible(Boolean.TRUE);
     }
 }

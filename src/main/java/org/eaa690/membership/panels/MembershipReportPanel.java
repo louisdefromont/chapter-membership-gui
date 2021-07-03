@@ -1,4 +1,4 @@
-package org.eaa690.membership;
+package org.eaa690.membership.panels;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eaa690.membership.model.MembershipReport;
 
 public class MembershipReportPanel extends JPanel implements ActionListener {
 

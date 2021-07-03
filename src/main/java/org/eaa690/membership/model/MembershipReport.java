@@ -1,4 +1,4 @@
-package org.eaa690.membership;
+package org.eaa690.membership.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
