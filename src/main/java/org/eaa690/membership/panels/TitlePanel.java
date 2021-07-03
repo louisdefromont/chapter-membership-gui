@@ -1,4 +1,4 @@
-package org.eaa690.membership;
+package org.eaa690.membership.panels;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
