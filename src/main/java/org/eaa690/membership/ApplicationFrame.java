@@ -9,6 +9,12 @@ import org.eaa690.membership.util.RFIDReader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ApplicationFrame
@@ -113,12 +119,37 @@ public class ApplicationFrame extends JFrame {
         }
     }
 
+    public void displayErrorMessage(final String message) {
+        try {
+            JOptionPane pane = new JOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
+            JDialog dialog = pane.createDialog(this, "Message");
+            dialog.setVisible(Boolean.TRUE);
+
+            ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+            Future<String> future = executor.submit(this::doNothing);
+            executor.schedule(() -> {
+                future.cancel(true);
+            }, 15000, TimeUnit.MILLISECONDS);
+            executor.shutdown();
+
+            future.get();
+            dialog.setVisible(Boolean.FALSE);
+        } catch (CancellationException | InterruptedException | ExecutionException e) {
+            System.out.println("getRFID() Error: " + e.getMessage());
+        }
+    }
+
+    private String doNothing() {
+        while (Boolean.TRUE) {}
+        return null;
+    }
+
     /**
      * Displays a pop-up modal error message.
      *
      * @param message String
      */
-    public void displayErrorMessage(final String message) {
+    public void displayErrorMessageOld(final String message) {
         final JDialog modelDialog = new JDialog(this, "Error", Dialog.ModalityType.DOCUMENT_MODAL);
         modelDialog.setBounds(132, 132, 300, 200);
         Container dialogContainer = modelDialog.getContentPane();
