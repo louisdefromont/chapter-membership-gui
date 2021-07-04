@@ -44,13 +44,18 @@ public class RFIDReader {
     }
 
     private String getRFIDValue() {
-        String line = null;
+        String line = "";
         BufferedReader in = null;
         try {
             final Process process = Runtime.getRuntime().exec("python main.py");
-            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(process.getInputStream());
+            char[] b = new char[1];
             while (StringUtils.isEmpty(line)) {
-                line = in.readLine();
+                while (in.ready()) {
+                    in.read(b);
+                    line = line + new String(b);
+                }
+                //line = in.readLine();
             }
         } catch (IOException ioe) {
             System.out.println("getRFIDValue() Error: " + ioe.getMessage());
