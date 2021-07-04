@@ -81,26 +81,17 @@ def parse_key_to_char(val):
     return CODE_MAP_CHAR[val] if val in CODE_MAP_CHAR else ""
 
 if __name__ == "__main__":
-    print "List of your devices :"
     devices = [InputDevice(fn) for fn in list_devices()]
-    for device in devices:
-        print "\t{}\t{}".format(device.fn, device.name)
-
-    print "Choose event ID :",
-    event_id = raw_input()
-
-    print "Exclusive access to device ? [1 or 0] : ",
-    exclusive_access = raw_input()
+    event_id = 0
+    exclusive_access = 0
 
     device = InputDevice('/dev/input/event{}'.format(event_id))
     if int(exclusive_access) == 1:
         device.grab()
 
-    file = open("rfid.last", "w")
     for event in device.read_loop():
         if event.type == ecodes.EV_KEY:
             e = categorize(event)
             if e.keystate == e.key_up:
-                file.write(parse_key_to_char(e.keycode))
-    file.write("\n")
-    file.close()
+                sys.stdout.write("\n")
+                sys.stdout.flush()

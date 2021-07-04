@@ -36,7 +36,7 @@ public class MembershipStatusPanel extends JPanel implements ActionListener {
 
     private Member getMember() throws ExecutionException, InterruptedException, JsonProcessingException {
         RFIDReader reader = new RFIDReader();
-        String rfid = reader.getLastRead();
+        String rfid = reader.getRFID();
         HttpRequest req = HttpRequest.newBuilder(URI.create(serviceURL + "/roster/find-by-rfid"))
                 .GET().build();
         CompletableFuture<HttpResponse<String>> response = client.sendAsync(req, HttpResponse.BodyHandlers.ofString());

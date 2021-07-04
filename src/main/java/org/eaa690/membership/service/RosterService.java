@@ -32,7 +32,7 @@ public class RosterService {
      */
     public boolean isAdmin(final String rfid) {
         if (StringUtils.isNotEmpty(rfid)) {
-            if ("12345".equalsIgnoreCase(rfid)) {
+            if ("3353207838".equalsIgnoreCase(rfid)) {
                 return Boolean.TRUE;
             }
         }

@@ -9,8 +9,6 @@ import org.eaa690.membership.util.RFIDReader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * ApplicationFrame
@@ -18,14 +16,9 @@ import java.awt.event.ActionListener;
 public class ApplicationFrame extends JFrame {
 
     /**
-     * Label of information displayed at bottom of screen.
-     */
-    private JLabel textLabel = new JLabel("This device can be used to check your membership status, assign or update an assignment of an RFID card, and perform other administrative tasks.  Certain functions may only be performed by authorized users.");
-
-    /**
      * Title panel.
      */
-    private TitlePanel titlePanel = new TitlePanel();
+    private final TitlePanel titlePanel = new TitlePanel();
 
     /**
      * Main menu panel.
@@ -45,26 +38,23 @@ public class ApplicationFrame extends JFrame {
     /**
      * Roster Service.
      */
-    private RosterService rosterService;
+    private final RosterService rosterService;
 
-    /**
-     * RFIDReader thread.
-     */
-    private RFIDReader rfidReader;
+    private final RFIDReader rfidReader = new RFIDReader();
 
     /**
      * Default constructor.
      *
      * @param rosterService RosterService
-     * @param rfidReader RFIDReader
      */
-    public ApplicationFrame(final RosterService rosterService, final RFIDReader rfidReader) {
+    public ApplicationFrame(final RosterService rosterService) {
         this.rosterService = rosterService;
-        this.rfidReader = rfidReader;
 
         add(titlePanel, BorderLayout.NORTH);
         add(buildLayeredPane(), BorderLayout.CENTER);
-        add(textLabel, BorderLayout.SOUTH);
+        add(new JLabel("This device can be used to check your membership status, assign or update an assignment " +
+                "of an RFID card, and perform other administrative tasks.  Certain functions may only be performed " +
+                "by authorized users."), BorderLayout.SOUTH);
 
         setUndecorated(Boolean.TRUE);
         setAlwaysOnTop(Boolean.TRUE);
@@ -105,7 +95,7 @@ public class ApplicationFrame extends JFrame {
      */
     public void switchPanel(final String panelToDisplay) {
         if (ApplicationConstants.ADMIN.equalsIgnoreCase(panelToDisplay)) {
-            final String rfid = rfidReader.getLastRead();
+            final String rfid = rfidReader.getRFID();
             if (rosterService.isAdmin(rfid)) {
                 mainMenuPanel.setVisible(Boolean.FALSE);
                 adminFunctionsPanel.setVisible(Boolean.TRUE);
@@ -135,12 +125,7 @@ public class ApplicationFrame extends JFrame {
         JPanel panel1 = new JPanel();
         panel1.setLayout(new FlowLayout());
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                modelDialog.setVisible(false);
-            }
-        });
+        closeButton.addActionListener(e -> modelDialog.setVisible(false));
 
         panel1.add(closeButton);
         dialogContainer.add(panel1, BorderLayout.SOUTH);

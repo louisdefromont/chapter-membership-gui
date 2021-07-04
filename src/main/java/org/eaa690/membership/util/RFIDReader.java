@@ -3,26 +3,19 @@ package org.eaa690.membership.util;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
+import java.io.InputStreamReader;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Reads input from an RFID reader.
- *
- * Implemented as a thread to allow for the reader to operate independently of the application.
  */
-public class RFIDReader extends Thread {
-
-    /**
-     * Reads data from System.in.
-     */
-    private Scanner in = new Scanner(System.in);
-
-    /**
-     * Last value read by scanner.
-     */
-    private String lastRead = null;
+public class RFIDReader {
 
     /**
      * Default constructor.
@@ -30,27 +23,40 @@ public class RFIDReader extends Thread {
     public RFIDReader() { }
 
     /**
-     * Infinite loop to read input.
+     * Timeboxed read of RFID from RFID card reader.
+     *
+     * @return read RFID value
      */
-    public void run() {
+    public String getRFID() {
         try {
-            Runtime.getRuntime().exec("sudo python main.py");
-        } catch (IOException ioe) {
-            System.out.println("Error: " + ioe.getMessage());
+            ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
+            Future<String> future = executor.submit(this::getRFIDValue);
+            executor.schedule(() -> {
+                future.cancel(true);
+            }, 3000, TimeUnit.MILLISECONDS);
+            executor.shutdown();
+            return future.get();
+        } catch (ExecutionException | InterruptedException e) {
+            System.out.println("Error: " + e.getMessage());
         }
+        return null;
     }
 
-    public String getLastRead() {
-        String currentLine = null;
+    private String getRFIDValue() {
+        String line = null;
+        BufferedReader in = null;
         try {
-            String file ="/home/pi/chapter-membership-gui/rfid.last";
-
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            currentLine = reader.readLine();
-            reader.close();
+            final Process process = Runtime.getRuntime().exec("python main.py");
+            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while (StringUtils.isEmpty(line)) {
+                line = in.readLine();
+            }
         } catch (IOException ioe) {
             System.out.println("Error: " + ioe.getMessage());
+        } finally {
+            try { Objects.requireNonNull(in).close(); } catch (Exception ignored) {}
         }
-        return currentLine;
+        return line;
     }
+
 }

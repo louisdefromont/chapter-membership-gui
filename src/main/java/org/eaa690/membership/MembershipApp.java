@@ -16,12 +16,9 @@ public class MembershipApp {
             System.out.println("Error loading properties: " + e);
         }
 
-        RFIDReader rfidReader = new RFIDReader();
-        rfidReader.start();
-
         RosterService rosterService = new RosterService(props);
 
-        ApplicationFrame frame = new ApplicationFrame(rosterService, rfidReader);
+        ApplicationFrame frame = new ApplicationFrame(rosterService);
         frame.setVisible(Boolean.TRUE);
     }
 }
