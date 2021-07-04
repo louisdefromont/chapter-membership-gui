@@ -33,7 +33,7 @@ public class RFIDReader {
             Future<String> future = executor.submit(this::getRFIDValue);
             executor.schedule(() -> {
                 future.cancel(true);
-            }, 3000, TimeUnit.MILLISECONDS);
+            }, 10000, TimeUnit.MILLISECONDS);
             executor.shutdown();
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
