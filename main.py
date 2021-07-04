@@ -93,5 +93,5 @@ if __name__ == "__main__":
         if event.type == ecodes.EV_KEY:
             e = categorize(event)
             if e.keystate == e.key_up:
-                sys.stdout.write("\n")
+                sys.stdout.write(parse_key_to_char(e.keycode))
                 sys.stdout.flush()
