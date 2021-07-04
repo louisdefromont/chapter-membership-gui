@@ -123,33 +123,13 @@ public class ApplicationFrame extends JFrame {
         try {
             JOptionPane pane = new JOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
             JDialog dialog = pane.createDialog(this, "Message");
+            dialog.setUndecorated(Boolean.TRUE);
             dialog.setVisible(Boolean.TRUE);
-            Thread.sleep(15000);
-            dialog.setVisible(Boolean.FALSE);
-        } catch (CancellationException | InterruptedException e) {
+            //Thread.sleep(15000);
+            //dialog.setVisible(Boolean.FALSE);
+        } catch (CancellationException /*| InterruptedException */ e) {
             System.out.println("getRFID() Error: " + e.getMessage());
         }
-    }
-
-    /**
-     * Displays a pop-up modal error message.
-     *
-     * @param message String
-     */
-    public void displayErrorMessageOld(final String message) {
-        final JDialog modelDialog = new JDialog(this, "Error", Dialog.ModalityType.DOCUMENT_MODAL);
-        modelDialog.setBounds(132, 132, 300, 200);
-        Container dialogContainer = modelDialog.getContentPane();
-        dialogContainer.setLayout(new BorderLayout());
-        dialogContainer.add(new JLabel(message), BorderLayout.CENTER);
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new FlowLayout());
-        JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(e -> modelDialog.setVisible(false));
-
-        panel1.add(closeButton);
-        dialogContainer.add(panel1, BorderLayout.SOUTH);
-        modelDialog.setVisible(Boolean.TRUE);
     }
 
 }
