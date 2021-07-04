@@ -125,9 +125,9 @@ public class ApplicationFrame extends JFrame {
             JDialog dialog = pane.createDialog(this, "Message");
             //dialog.setUndecorated(Boolean.TRUE);
             dialog.setVisible(Boolean.TRUE);
-            //Thread.sleep(15000);
+            Thread.sleep(15000);
             //dialog.setVisible(Boolean.FALSE);
-        } catch (CancellationException /*| InterruptedException */ e) {
+        } catch (CancellationException | InterruptedException e) {
             System.out.println("getRFID() Error: " + e.getMessage());
         }
     }
