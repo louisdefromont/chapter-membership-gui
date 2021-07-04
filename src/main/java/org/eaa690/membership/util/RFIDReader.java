@@ -50,11 +50,11 @@ public class RFIDReader {
             final Process process = Runtime.getRuntime().exec("python main.py");
             in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             char[] b = new char[10];
-            while (in.ready() || StringUtils.isEmpty(line)) {
-                in.read(b);
-                line = line + new String(b);
-                //line = in.readLine();
+            int readCount = -1;
+            while (readCount < 0 || StringUtils.isEmpty(line)) {
+                readCount = in.read(b);
             }
+            line = new String(b);
         } catch (IOException ioe) {
             System.out.println("getRFIDValue() Error: " + ioe.getMessage());
         } finally {
