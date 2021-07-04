@@ -124,24 +124,11 @@ public class ApplicationFrame extends JFrame {
             JOptionPane pane = new JOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
             JDialog dialog = pane.createDialog(this, "Message");
             dialog.setVisible(Boolean.TRUE);
-
-            ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
-            Future<String> future = executor.submit(this::doNothing);
-            executor.schedule(() -> {
-                future.cancel(true);
-            }, 15000, TimeUnit.MILLISECONDS);
-            executor.shutdown();
-
-            future.get();
+            Thread.sleep(15000);
             dialog.setVisible(Boolean.FALSE);
-        } catch (CancellationException | InterruptedException | ExecutionException e) {
+        } catch (CancellationException | InterruptedException e) {
             System.out.println("getRFID() Error: " + e.getMessage());
         }
-    }
-
-    private String doNothing() {
-        while (Boolean.TRUE) {}
-        return null;
     }
 
     /**
