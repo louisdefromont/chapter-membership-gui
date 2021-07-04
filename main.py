@@ -96,9 +96,11 @@ if __name__ == "__main__":
     if int(exclusive_access) == 1:
         device.grab()
 
+    file = open("rfid.last", "w")
     for event in device.read_loop():
         if event.type == ecodes.EV_KEY:
             e = categorize(event)
             if e.keystate == e.key_up:
-                sys.stdout.write(parse_key_to_char(e.keycode))
-                sys.stdout.flush()
+                file.write(parse_key_to_char(e.keycode))
+    file.write("\n")
+    file.close()

@@ -2,6 +2,9 @@ package org.eaa690.membership.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -30,16 +33,24 @@ public class RFIDReader extends Thread {
      * Infinite loop to read input.
      */
     public void run() {
-        while (Boolean.TRUE) {
-            String readLine = in.nextLine();
-            if (StringUtils.isNotEmpty(readLine)) {
-                lastRead = readLine;
-                System.out.println("You entered string: " + lastRead);
-            }
+        try {
+            Runtime.getRuntime().exec("sudo python main.py");
+        } catch (IOException ioe) {
+            System.out.println("Error: " + ioe.getMessage());
         }
     }
 
     public String getLastRead() {
-        return lastRead;
+        String currentLine = null;
+        try {
+            String file ="/home/pi/chapter-membership-gui/rfid.last";
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            currentLine = reader.readLine();
+            reader.close();
+        } catch (IOException ioe) {
+            System.out.println("Error: " + ioe.getMessage());
+        }
+        return currentLine;
     }
 }
