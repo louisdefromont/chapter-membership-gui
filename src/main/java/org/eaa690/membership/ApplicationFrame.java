@@ -9,12 +9,6 @@ import org.eaa690.membership.util.RFIDReader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * ApplicationFrame
@@ -110,7 +104,7 @@ public class ApplicationFrame extends JFrame {
             } else {
                 final String msg = String.format("RFID [%s] is not an admin user", rfid);
                 System.out.println(msg);
-                JOptionPane.showMessageDialog(this, msg);
+                JOptionPane.showMessageDialog(null, msg);
             }
         }
         if (ApplicationConstants.MAIN_MENU.equalsIgnoreCase(panelToDisplay)) {
