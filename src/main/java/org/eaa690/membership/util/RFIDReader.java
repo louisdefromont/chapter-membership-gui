@@ -53,6 +53,7 @@ public class RFIDReader {
             int readCount = -1;
             while (readCount < 0 || StringUtils.isEmpty(line)) {
                 readCount = in.read(b);
+                System.out.println("Read ["+readCount+"] characters.");
             }
             line = new String(b);
         } catch (IOException ioe) {
