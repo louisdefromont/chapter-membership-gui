@@ -37,7 +37,7 @@ public class RFIDReader {
             executor.shutdown();
             return future.get();
         } catch (ExecutionException | InterruptedException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("getRFID() Error: " + e.getMessage());
         }
         return null;
     }
@@ -52,7 +52,7 @@ public class RFIDReader {
                 line = in.readLine();
             }
         } catch (IOException ioe) {
-            System.out.println("Error: " + ioe.getMessage());
+            System.out.println("getRFIDValue() Error: " + ioe.getMessage());
         } finally {
             try { Objects.requireNonNull(in).close(); } catch (Exception ignored) {}
         }

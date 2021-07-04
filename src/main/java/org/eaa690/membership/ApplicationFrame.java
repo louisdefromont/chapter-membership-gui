@@ -95,7 +95,9 @@ public class ApplicationFrame extends JFrame {
      */
     public void switchPanel(final String panelToDisplay) {
         if (ApplicationConstants.ADMIN.equalsIgnoreCase(panelToDisplay)) {
+            System.out.println("Fetching RFID from reader...");
             final String rfid = rfidReader.getRFID();
+            System.out.println("retrieved ["+rfid+"] from reader.");
             if (rosterService.isAdmin(rfid)) {
                 mainMenuPanel.setVisible(Boolean.FALSE);
                 adminFunctionsPanel.setVisible(Boolean.TRUE);
