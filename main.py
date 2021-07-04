@@ -89,9 +89,16 @@ if __name__ == "__main__":
     if int(exclusive_access) == 1:
         device.grab()
 
+    data = ""
     for event in device.read_loop():
         if event.type == ecodes.EV_KEY:
             e = categorize(event)
             if e.keystate == e.key_up:
-                sys.stdout.write(parse_key_to_char(e.keycode))
-                sys.stdout.flush()
+                if e.keycode == "KEY_ENTER":
+                    sys.stdout.write(data)
+                    sys.stdout.write("\n")
+                    sys.stdout.flush()
+                    data = ""
+                else:
+                    data += parse_key_to_char(e.keycode)
+                    
