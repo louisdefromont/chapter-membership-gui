@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -36,7 +37,7 @@ public class RFIDReader {
             }, 10000, TimeUnit.MILLISECONDS);
             executor.shutdown();
             return future.get();
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException | CancellationException e) {
             System.out.println("getRFID() Error: " + e.getMessage());
         }
         return null;
