@@ -123,7 +123,7 @@ public class ApplicationFrame extends JFrame {
         try {
             JOptionPane pane = new JOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
             JDialog dialog = pane.createDialog(this, "Message");
-            dialog.setUndecorated(Boolean.TRUE);
+            //dialog.setUndecorated(Boolean.TRUE);
             dialog.setVisible(Boolean.TRUE);
             //Thread.sleep(15000);
             //dialog.setVisible(Boolean.FALSE);
