@@ -48,7 +48,7 @@ public class RFIDReader {
         BufferedReader in = null;
         try {
             final Process process = Runtime.getRuntime().exec("python main.py");
-            in = new BufferedReader(new InputStreamReader(process.getInputStream());
+            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             char[] b = new char[1];
             while (StringUtils.isEmpty(line)) {
                 while (in.ready()) {
