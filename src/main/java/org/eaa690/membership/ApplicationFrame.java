@@ -9,6 +9,7 @@ import org.eaa690.membership.util.RFIDReader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * ApplicationFrame
@@ -98,6 +99,11 @@ public class ApplicationFrame extends JFrame {
             System.out.println("Fetching RFID from reader...");
             final String rfid = rfidReader.getRFID();
             System.out.println("retrieved ["+rfid+"] from reader.");
+            try {
+                Runtime.getRuntime().exec("matchbox-keyboard");
+            } catch (IOException ioe) {
+                System.out.println("Error: " + ioe.getMessage());
+            }
             if (rosterService.isAdmin(rfid)) {
                 mainMenuPanel.setVisible(Boolean.FALSE);
                 adminFunctionsPanel.setVisible(Boolean.TRUE);
