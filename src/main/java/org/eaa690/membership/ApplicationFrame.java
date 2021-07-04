@@ -121,15 +121,9 @@ public class ApplicationFrame extends JFrame {
 
     public void displayErrorMessage(final String message) {
         try {
-            JOptionPane pane = new JOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
-            JDialog dialog = pane.createDialog(this, "Message");
-            //dialog.setUndecorated(Boolean.TRUE);
-            dialog.setVisible(Boolean.TRUE);
-            pane.setVisible(Boolean.TRUE);
-            Thread.sleep(15000);
-            pane.setVisible(Boolean.FALSE);
-            dialog.setVisible(Boolean.FALSE);
-        } catch (CancellationException | InterruptedException e) {
+            JOptionPane.showMessageDialog(this, message, "Message", JOptionPane.INFORMATION_MESSAGE);
+            //Thread.sleep(15000);
+        } catch (CancellationException /*| InterruptedException*/ e) {
             System.out.println("getRFID() Error: " + e.getMessage());
         }
     }
