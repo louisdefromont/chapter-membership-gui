@@ -101,4 +101,3 @@ if __name__ == "__main__":
                     data = ""
                 else:
                     data += parse_key_to_char(e.keycode)
-                    
