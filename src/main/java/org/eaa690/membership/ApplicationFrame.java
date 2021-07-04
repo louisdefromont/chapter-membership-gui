@@ -110,21 +110,12 @@ public class ApplicationFrame extends JFrame {
             } else {
                 final String msg = String.format("RFID [%s] is not an admin user", rfid);
                 System.out.println(msg);
-                displayErrorMessage(msg);
+                JOptionPane.showMessageDialog(this, msg);
             }
         }
         if (ApplicationConstants.MAIN_MENU.equalsIgnoreCase(panelToDisplay)) {
             mainMenuPanel.setVisible(Boolean.TRUE);
             adminFunctionsPanel.setVisible(Boolean.FALSE);
-        }
-    }
-
-    public void displayErrorMessage(final String message) {
-        try {
-            JOptionPane.showMessageDialog(this, message, "Message", JOptionPane.INFORMATION_MESSAGE);
-            //Thread.sleep(15000);
-        } catch (CancellationException /*| InterruptedException*/ e) {
-            System.out.println("getRFID() Error: " + e.getMessage());
         }
     }
 
