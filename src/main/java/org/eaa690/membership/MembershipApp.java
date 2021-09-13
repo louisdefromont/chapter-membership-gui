@@ -1,10 +1,9 @@
 package org.eaa690.membership;
 
-import org.eaa690.membership.service.RosterService;
-import org.eaa690.membership.util.RFIDReader;
-
 import java.io.IOException;
 import java.util.Properties;
+
+import org.eaa690.membership.service.RosterService;
 
 public class MembershipApp {
 

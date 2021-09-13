@@ -1,27 +1,40 @@
 package org.eaa690.membership.util;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Objects;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
 
 /**
  * Reads input from an RFID reader.
  */
 public class RFIDReader {
 
+    private RFIDListener rfidListener;
+
     /**
      * Default constructor.
      */
-    public RFIDReader() { }
+    public RFIDReader() { 
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+
+        try {
+            GlobalScreen.registerNativeHook();
+            rfidListener = new RFIDListener();
+            GlobalScreen.addNativeKeyListener(rfidListener);
+        } catch (NativeHookException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Timeboxed read of RFID from RFID card reader.
@@ -44,20 +57,7 @@ public class RFIDReader {
     }
 
     private String getRFIDValue() {
-        String line = null;
-        BufferedReader in = null;
-        try {
-            final Process process = Runtime.getRuntime().exec("python main.py");
-            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            while (StringUtils.isEmpty(line)) {
-                line = in.readLine();
-            }
-        } catch (IOException ioe) {
-            System.out.println("getRFIDValue() Error: " + ioe.getMessage());
-        } finally {
-            try { Objects.requireNonNull(in).close(); } catch (Exception ignored) {}
-        }
-        return line;
+        return rfidListener.getRfid();
     }
 
 }
