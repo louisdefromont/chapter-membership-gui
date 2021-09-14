@@ -1,17 +1,17 @@
 package org.eaa690.membership.panels;
 
-import org.eaa690.membership.ApplicationConstants;
-import org.eaa690.membership.ApplicationFrame;
+import java.util.function.BiFunction;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+import org.eaa690.membership.ApplicationFrame;
 
 /**
  * Main menu panel
  */
-public class MainMenuPanel extends JPanel implements ActionListener {
+public class MainMenuPanel extends MenuPanel {
 
     /**
      * Membership status button.
@@ -38,39 +38,24 @@ public class MainMenuPanel extends JPanel implements ActionListener {
      *
      * @param applicationFrame ApplicationFrame
      */
-    public MainMenuPanel(final ApplicationFrame applicationFrame) {
+    public MainMenuPanel(final ApplicationFrame applicationFrame, BiFunction<ApplicationFrame, MenuPanel, MenuPanel> ... childMenuConstructors) {
+        super(applicationFrame, null, childMenuConstructors, "Main Menu");
         this.applicationFrame = applicationFrame;
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add (new JTextField("Yo, this is the main menu"));
 
-        membershipStatusButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
-        membershipReportButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
-        adminFunctionsButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
+        // membershipStatusButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
+        // membershipReportButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
+        // adminFunctionsButton.setFont(new Font("Times New Roman", Font.BOLD, 64));
 
-        membershipStatusButton.addActionListener(this);
-        membershipReportButton.addActionListener(this);
-        adminFunctionsButton.addActionListener(this);
-
-        add(membershipStatusButton);
-        add(membershipReportButton);
-        add(adminFunctionsButton);
+        // add(membershipStatusButton);
+        // add(membershipReportButton);
+        // add(adminFunctionsButton);
     }
 
-    /**
-     * Called when a button is pressed.
-     *
-     * @param e ActionEvent
-     */
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == membershipStatusButton) {
-            System.out.println("Membership Status Button pressed");
-        }
-        if (e.getSource() == membershipReportButton) {
-            System.out.println("Membership Report Button pressed");
-        }
-        if (e.getSource() == adminFunctionsButton) {
-            applicationFrame.switchPanel(ApplicationConstants.ADMIN);
-        }
-    }
+    public void displayPanel() {
 
+    }
 }

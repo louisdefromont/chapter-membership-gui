@@ -3,9 +3,14 @@ package org.eaa690.membership;
 import org.eaa690.membership.panels.AdminFunctionsPanel;
 import org.eaa690.membership.panels.MainMenuPanel;
 import org.eaa690.membership.panels.MemberPanel;
-import org.eaa690.membership.panels.TitlePanel;
+import org.eaa690.membership.panels.MenuNavigationPanel;
+import org.eaa690.membership.panels.MenuPanel;
+import org.eaa690.membership.panels.TestMenuPanel;
+import org.eaa690.membership.panels.HeaderPanel;
 import org.eaa690.membership.service.RosterService;
 import org.eaa690.membership.util.RFIDReader;
+
+import lombok.Getter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,11 +24,11 @@ public class ApplicationFrame extends JFrame {
     /**
      * Title panel.
      */
-    private final TitlePanel titlePanel = new TitlePanel();
-
+    private final HeaderPanel headerPanel;
     /**
      * Main menu panel.
      */
+    @Getter
     private MainMenuPanel mainMenuPanel;
 
     /**
@@ -50,9 +55,13 @@ public class ApplicationFrame extends JFrame {
      */
     public ApplicationFrame(final RosterService rosterService) {
         this.rosterService = rosterService;
+        mainMenuPanel = new MainMenuPanel(this, TestMenuPanel::new);
+        mainMenuPanel.displayPanel();
+        headerPanel = new HeaderPanel(this, mainMenuPanel.getMenuNavigationPanel());
 
-        add(titlePanel, BorderLayout.NORTH);
-        add(buildLayeredPane(), BorderLayout.CENTER);
+        add(headerPanel, BorderLayout.NORTH);
+        //add(buildLayeredPane(), BorderLayout.CENTER);
+        add(mainMenuPanel, BorderLayout.CENTER);
         add(new JLabel("This device can be used to check your membership status, assign or update an assignment " +
                 "of an RFID card, and perform other administrative tasks.  Certain functions may only be performed " +
                 "by authorized users."), BorderLayout.SOUTH);
@@ -117,6 +126,13 @@ public class ApplicationFrame extends JFrame {
             mainMenuPanel.setVisible(Boolean.TRUE);
             adminFunctionsPanel.setVisible(Boolean.FALSE);
         }
+    }
+
+    public void switchMenu(MenuPanel menuPanel) {
+        menuPanel.displayPanel();
+        add(menuPanel, BorderLayout.CENTER);
+        headerPanel.setMenuNavigationPanel(menuPanel.getMenuNavigationPanel());
+        revalidate();
     }
 
 }

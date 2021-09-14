@@ -2,6 +2,8 @@ package org.eaa690.membership.panels;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.eaa690.membership.ApplicationFrame;
 import org.eaa690.membership.model.Member;
 import org.eaa690.membership.util.RFIDReader;
 
@@ -15,23 +17,18 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-public class MembershipStatusPanel extends JPanel implements ActionListener {
+public class MembershipStatusPanel extends MenuPanel {
 
     private ObjectMapper mapper = new ObjectMapper();
 
     private JButton closeButton = new JButton("Close");
 
-    private String serviceURL = "";
+    private String serviceURL = "http://127.0.0.1:8080";
 
     private HttpClient client = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
 
-    public MembershipStatusPanel() {
-        try {
-            final Member member = getMember();
-        } catch (ExecutionException | InterruptedException | JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        add(closeButton);
+    public MembershipStatusPanel(ApplicationFrame applicationFrame, MenuPanel parentMenu) {
+        super(applicationFrame, parentMenu, null, "Membership Status");
     }
 
     private Member getMember() throws ExecutionException, InterruptedException, JsonProcessingException {
@@ -47,9 +44,12 @@ public class MembershipStatusPanel extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == closeButton) {
-            setVisible(Boolean.FALSE);
+    public void displayPanel() {
+        try {
+            final Member member = getMember();
+        } catch (ExecutionException | InterruptedException | JsonProcessingException e) {
+            e.printStackTrace();
         }
+        add(closeButton);
     }
 }
