@@ -24,7 +24,11 @@ public class RFIDListener implements NativeKeyListener {
             rfid = rawInput;
             rawInput = "";
         } else {
-            rawInput += keyPressed;
+            try {
+                Integer.parseInt(keyPressed);
+                rawInput += keyPressed;
+            } catch (NumberFormatException e) {
+            }
         }
     }
 
