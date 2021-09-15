@@ -1,15 +1,25 @@
 package org.eaa690.membership;
 
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
 import org.eaa690.membership.panels.AdminFunctionsPanel;
 import org.eaa690.membership.panels.MainMenuPanel;
 import org.eaa690.membership.panels.MemberPanel;
 import org.eaa690.membership.panels.TitlePanel;
 import org.eaa690.membership.service.RosterService;
 import org.eaa690.membership.util.RFIDReader;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.IOException;
 
 /**
  * ApplicationFrame
@@ -43,6 +53,8 @@ public class ApplicationFrame extends JFrame {
 
     private final RFIDReader rfidReader = new RFIDReader();
 
+    private List<JPanel> menuPanels = new ArrayList<JPanel>();
+
     /**
      * Default constructor.
      *
@@ -62,6 +74,9 @@ public class ApplicationFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         //pack();
         setExtendedState(Frame.MAXIMIZED_BOTH);
+
+        this.menuPanels.add(mainMenuPanel);
+        this.menuPanels.add(adminFunctionsPanel);
     }
 
     /**
@@ -99,14 +114,8 @@ public class ApplicationFrame extends JFrame {
             System.out.println("Fetching RFID from reader...");
             final String rfid = rfidReader.getRFID();
             System.out.println("retrieved ["+rfid+"] from reader.");
-            try {
-                Runtime.getRuntime().exec("matchbox-keyboard");
-            } catch (IOException ioe) {
-                System.out.println("Error: " + ioe.getMessage());
-            }
             if (rosterService.isAdmin(rfid)) {
-                mainMenuPanel.setVisible(Boolean.FALSE);
-                adminFunctionsPanel.setVisible(Boolean.TRUE);
+                setPanelVisible(adminFunctionsPanel);
             } else {
                 final String msg = String.format("RFID [%s] is not an admin user", rfid);
                 System.out.println(msg);
@@ -114,9 +123,15 @@ public class ApplicationFrame extends JFrame {
             }
         }
         if (ApplicationConstants.MAIN_MENU.equalsIgnoreCase(panelToDisplay)) {
-            mainMenuPanel.setVisible(Boolean.TRUE);
-            adminFunctionsPanel.setVisible(Boolean.FALSE);
+            setPanelVisible(mainMenuPanel);
         }
+    }
+
+    public void setPanelVisible(JPanel panel) {
+        for (JPanel p : menuPanels) {
+            p.setVisible(Boolean.FALSE);
+        }
+        panel.setVisible(Boolean.TRUE);
     }
 
 }
