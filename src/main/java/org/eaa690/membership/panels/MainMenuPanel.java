@@ -63,7 +63,7 @@ public class MainMenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == membershipStatusButton) {
-            System.out.println("Membership Status Button pressed");
+            applicationFrame.switchPanel(ApplicationConstants.MEMBERSHIP_STATUS);
         }
         if (e.getSource() == membershipReportButton) {
             System.out.println("Membership Report Button pressed");

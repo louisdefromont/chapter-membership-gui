@@ -17,6 +17,7 @@ import javax.swing.WindowConstants;
 import org.eaa690.membership.panels.AdminFunctionsPanel;
 import org.eaa690.membership.panels.MainMenuPanel;
 import org.eaa690.membership.panels.MemberPanel;
+import org.eaa690.membership.panels.MembershipStatusPanel;
 import org.eaa690.membership.panels.TitlePanel;
 import org.eaa690.membership.service.RosterService;
 import org.eaa690.membership.util.RFIDReader;
@@ -54,6 +55,8 @@ public class ApplicationFrame extends JFrame {
     private final RFIDReader rfidReader = new RFIDReader();
 
     private List<JPanel> menuPanels = new ArrayList<JPanel>();
+
+    private List<JPanel> dynamicMenuPanels = new ArrayList<JPanel>();
 
     /**
      * Default constructor.
@@ -125,13 +128,24 @@ public class ApplicationFrame extends JFrame {
         if (ApplicationConstants.MAIN_MENU.equalsIgnoreCase(panelToDisplay)) {
             setPanelVisible(mainMenuPanel);
         }
+        if (ApplicationConstants.MEMBERSHIP_STATUS.equalsIgnoreCase(panelToDisplay)) {
+            MembershipStatusPanel membershipStatusPanel = new MembershipStatusPanel(this);
+            setPanelVisible(membershipStatusPanel);
+        }
     }
 
     public void setPanelVisible(JPanel panel) {
+        while (dynamicMenuPanels.size() > 0) {
+            dynamicMenuPanels.get(0).setVisible(Boolean.FALSE);
+            dynamicMenuPanels.remove(0);
+        }
         for (JPanel p : menuPanels) {
             p.setVisible(Boolean.FALSE);
         }
         panel.setVisible(Boolean.TRUE);
+        if (! menuPanels.contains(panel)) {
+            dynamicMenuPanels.add(panel);
+        }
     }
 
 }
