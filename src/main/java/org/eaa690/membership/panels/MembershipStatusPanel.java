@@ -39,10 +39,15 @@ public class MembershipStatusPanel extends JPanel implements ActionListener {
         this.applicationFrame = applicationFrame;
         try {
             final Member member = getMember();
-            JLabel nameLabel = new JLabel(String.format("Name: %s", member.getName()));
-            JLabel expirationDateLabel = new JLabel(String.format("Expiration Date: %s", member.getExpirationDate().toString()));
-            add(nameLabel);
-            add(expirationDateLabel);
+            if (member != null) {
+                JLabel nameLabel = new JLabel(String.format("Name: %s", member.getName()));
+                JLabel expirationDateLabel = new JLabel(String.format("Expiration Date: %s", member.getExpirationDate().toString()));
+                add(nameLabel);
+                add(expirationDateLabel);
+            } else {
+                JLabel errorLabel = new JLabel("Error getting member information.");
+                add(errorLabel);
+            }
         } catch (ExecutionException | InterruptedException | JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -69,8 +74,7 @@ public class MembershipStatusPanel extends JPanel implements ActionListener {
             getMemberDataResponse.join();
             return member;
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("Error connecting to aerie");
         }
 
         return null;
